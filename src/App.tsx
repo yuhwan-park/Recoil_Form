@@ -1,5 +1,5 @@
 import { createGlobalStyle } from "styled-components";
-import Form from "./Form";
+import Router from "./Router";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -64,7 +64,7 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      <Form />
+      <Router />
     </>
   );
 }
