@@ -1,12 +1,12 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Form from "./router/Form";
-import ToDoList from "./router/ToDo";
+import Form from "./Form";
+import ToDo from "./ToDo";
 
 function Router() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<ToDoList />} />
+        <Route path="/" element={<ToDo />} />
         <Route path="/signUp" element={<Form />} />
       </Routes>
     </BrowserRouter>
