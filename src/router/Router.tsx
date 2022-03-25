@@ -7,7 +7,7 @@ function Router() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<ToDoList />} />
-        <Route path="/signUp" element={<Form />} />
+        <Route path="/signup" element={<Form />} />
       </Routes>
     </BrowserRouter>
   );

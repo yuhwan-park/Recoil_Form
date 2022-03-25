@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
-import { toDoState } from "../atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { categoryState, toDoState } from "../atoms";
 
 interface IForm {
   ToDo: string;
@@ -8,6 +8,7 @@ interface IForm {
 
 function CreateTodo() {
   const [toDos, setToDos] = useRecoilState(toDoState);
+  const category = useRecoilValue(categoryState);
   const {
     register,
     handleSubmit,
@@ -16,13 +17,17 @@ function CreateTodo() {
     formState: { errors },
   } = useForm<IForm>();
   const onValid = ({ ToDo }: IForm) => {
-    if (toDos.length >= 15) {
+    if (toDos.length >= 20) {
       setError("ToDo", { message: "너무 많은 할일은 자신을 지치게 합니다!" });
       return; // 너무 많은 할일은 버그를 일으키므로 사전에 방지
     }
     setToDos((prevToDos) => [
       ...prevToDos,
-      { text: ToDo, id: Date.now(), category: "TO_DO" },
+      {
+        text: ToDo,
+        id: Date.now(),
+        category,
+      },
     ]); // atom의 default는 array고 atom 도 IToDo[] 형식의 array기 때문에 spread 연산자로 적기
     setValue("ToDo", ""); // 인풋 비우기
   };

@@ -1,5 +1,5 @@
 import { useSetRecoilState } from "recoil";
-import { IToDo, toDoState } from "../atoms";
+import { Categories, IToDo, toDoState } from "../atoms";
 
 function ToDo({ text, category, id }: IToDo) {
   const setToDos = useSetRecoilState(toDoState);
@@ -13,7 +13,7 @@ function ToDo({ text, category, id }: IToDo) {
       const newToDo = {
         text,
         id,
-        category: name as IToDo["category"],
+        category: name as any,
       };
       const newToDos = [...oldToDos]; // state를 mutate하지 않기 위해 배열을 얕은 복제한 뒤 splice
       newToDos.splice(targetIndex, 1, newToDo);
@@ -23,18 +23,18 @@ function ToDo({ text, category, id }: IToDo) {
   return (
     <li>
       {text}
-      {category !== "TO_DO" && (
-        <button name="TO_DO" onClick={onClick}>
+      {category !== Categories.TO_DO && (
+        <button name={Categories.TO_DO} onClick={onClick}>
           To Do
         </button>
       )}
-      {category !== "DOING" && (
-        <button name="DOING" onClick={onClick}>
+      {category !== Categories.DOING && (
+        <button name={Categories.DOING} onClick={onClick}>
           Doing
         </button>
       )}
-      {category !== "DONE" && (
-        <button name="DONE" onClick={onClick}>
+      {category !== Categories.DONE && (
+        <button name={Categories.DONE} onClick={onClick}>
           Done
         </button>
       )}
