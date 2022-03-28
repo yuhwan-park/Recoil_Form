@@ -1,5 +1,8 @@
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { toDoState } from "./atoms";
+import DraggableCards from "./Components/DraggableCards";
 
 const Container = styled.div`
   display: flex;
@@ -19,15 +22,18 @@ const Borad = styled.ul`
   min-width: 360px;
   box-shadow: 2px 5px 13px 0px rgb(0 0 0 / 50%);
 `;
-const Card = styled.li`
-  padding: 10px 10px;
-  margin: 10px 0;
-  border-radius: 5px;
-  background-color: ${(props) => props.theme.cardColor};
-`;
-const toDos = ["a", "b", "c", "d", "e", "f", "g", "h", "i"];
+
 function App() {
-  const onDragEnd = () => {};
+  const [toDos, setToDos] = useRecoilState(toDoState);
+  const onDragEnd = ({ destination, source, draggableId }: DropResult) => {
+    if (!destination) return;
+    setToDos((toDo) => {
+      const copyToDos = [...toDo];
+      copyToDos.splice(source.index, 1);
+      copyToDos.splice(destination.index, 0, draggableId);
+      return copyToDos;
+    });
+  };
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Container>
@@ -36,17 +42,7 @@ function App() {
             {(provided) => (
               <Borad ref={provided.innerRef} {...provided.droppableProps}>
                 {toDos.map((toDo, index) => (
-                  <Draggable draggableId={toDo} index={index}>
-                    {(provided) => (
-                      <Card
-                        ref={provided.innerRef}
-                        {...provided.dragHandleProps}
-                        {...provided.draggableProps}
-                      >
-                        {toDo}
-                      </Card>
-                    )}
-                  </Draggable>
+                  <DraggableCards key={toDo} toDo={toDo} index={index} />
                 ))}
                 {provided.placeholder}
               </Borad>
