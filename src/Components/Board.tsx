@@ -54,6 +54,9 @@ const Form = styled.form`
     height: 30px;
     border: none;
     border-bottom: 2px solid #58a5f0;
+    &:focus {
+      outline: none;
+    }
   }
 `;
 
@@ -82,6 +85,9 @@ function Board({ toDos, boardId }: IBoardProps) {
   const onClick = () => {
     setFlag((flag) => !flag);
   };
+  const onBlur = () => {
+    setFlag(true);
+  };
   return (
     <Droppable droppableId={boardId}>
       {(provided, snapshot) => (
@@ -96,9 +102,10 @@ function Board({ toDos, boardId }: IBoardProps) {
               <Title>{boardId}</Title>
             ) : (
               <input
-                {...register("toDo")}
+                {...register("toDo", { required: true })}
                 type="text"
                 placeholder="여기에 입력하세요!"
+                onBlur={onBlur}
               />
             )}
             <i className="fa-solid fa-plus" onClick={onClick}></i>

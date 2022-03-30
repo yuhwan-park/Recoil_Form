@@ -11,9 +11,10 @@ interface IToDoState {
 
 export const toDoState = atom<IToDoState>({
   key: "toDo",
-  default: {
-    to_do: [],
-    doing: [],
-    done: [],
-  },
+  default: {},
+});
+
+export const modalState = atom({
+  key: "modal",
+  default: true,
 });

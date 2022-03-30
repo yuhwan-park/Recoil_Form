@@ -16,4 +16,6 @@
 <li>2.2.0 : splice로 dnd하면 위치 바뀌는 기능, Card 컴포넌트화, React memo로 불필요한 렌더링 방지</li>
 <li>3.1.0 : 여러 board 만든 후 board끼리 dnd 할 수 있는 기능, dnd의 snapshot 으로 옮길때 배경색 바뀌는 기능</li>
 <li>4.1.0 : ToDo 추가할 수 있는 input 기능, ToDo 삭제기능 추가</li>
+<li>4.2.0 : Board 추가기능</li>
+
 </ul>

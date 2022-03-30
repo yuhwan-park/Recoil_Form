@@ -1,8 +1,9 @@
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { toDoState } from "./atoms";
+import { modalState, toDoState } from "./atoms";
 import Board from "./Components/Board";
+import CreateBoard from "./Components/CreateBoard";
 
 const Container = styled.div`
   display: flex;
@@ -10,6 +11,15 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
   height: 100vh;
+  > i {
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    cursor: pointer;
+    font-size: 50px;
+    color: #bbb;
+    z-index: 9999;
+  }
 `;
 const Borads = styled.div`
   display: grid;
@@ -22,7 +32,8 @@ const Borads = styled.div`
 
 function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
-  const onDragEnd = ({ destination, source, draggableId }: DropResult) => {
+  const setModal = useSetRecoilState(modalState);
+  const onDragEnd = ({ destination, source }: DropResult) => {
     if (!destination) return;
     if (destination?.droppableId === source.droppableId) {
       // same board movement
@@ -53,14 +64,19 @@ function App() {
       });
     }
   };
+  const onClick = () => {
+    setModal((prev) => !prev);
+  };
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Container>
+        <i className="fa-solid fa-circle-plus" onClick={onClick}></i>
         <Borads>
           {Object.keys(toDos).map((boardId) => (
             <Board boardId={boardId} toDos={toDos[boardId]} key={boardId} />
           ))}
         </Borads>
+        <CreateBoard />
       </Container>
     </DragDropContext>
   );
