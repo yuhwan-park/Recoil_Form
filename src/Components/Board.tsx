@@ -1,6 +1,10 @@
 import { Droppable } from "react-beautiful-dnd";
+import { useForm } from "react-hook-form";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { IToDo, toDoState } from "../atoms";
 import DraggableCards from "./DraggableCards";
+import { useState } from "react";
 
 interface iWrapper {
   isDraggingOver: boolean;
@@ -26,15 +30,58 @@ const Title = styled.div`
   text-align: center;
   padding-bottom: 10px;
   font-weight: 700;
-  border-bottom: 1px solid lightgray;
+`;
+const Form = styled.form`
+  display: flex;
+  position: relative;
+  width: 100%;
+  border-bottom: 1px solid #bbb;
+  padding: 10px 0px;
+  i {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    cursor: pointer;
+    color: #58a5f0;
+    font-size: 30px;
+    transition: color 0.3s ease-in-out;
+    &:hover {
+      color: #004c8c;
+    }
+  }
+  input {
+    width: 80%;
+    height: 30px;
+    border: none;
+    border-bottom: 2px solid #58a5f0;
+  }
 `;
 
 interface IBoardProps {
-  toDos: string[];
+  toDos: IToDo[];
   boardId: string;
 }
-
 function Board({ toDos, boardId }: IBoardProps) {
+  const [flag, setFlag] = useState(true);
+  const { register, setValue, handleSubmit } = useForm();
+  const setToDos = useSetRecoilState(toDoState);
+  const onValid = ({ toDo }: any) => {
+    // ToDo 추가 기능
+    const newToDo = {
+      id: Date.now(),
+      text: toDo,
+    };
+    setToDos((allBoards) => {
+      return {
+        ...allBoards,
+        [boardId]: [...allBoards[boardId], newToDo],
+      };
+    });
+    setValue("toDo", "");
+  };
+  const onClick = () => {
+    setFlag((flag) => !flag);
+  };
   return (
     <Droppable droppableId={boardId}>
       {(provided, snapshot) => (
@@ -44,9 +91,26 @@ function Board({ toDos, boardId }: IBoardProps) {
           ref={provided.innerRef}
           {...provided.droppableProps}
         >
-          <Title>{boardId}</Title>
+          <Form onSubmit={handleSubmit(onValid)}>
+            {flag ? (
+              <Title>{boardId}</Title>
+            ) : (
+              <input
+                {...register("toDo")}
+                type="text"
+                placeholder="여기에 입력하세요!"
+              />
+            )}
+            <i className="fa-solid fa-plus" onClick={onClick}></i>
+          </Form>
           {toDos.map((toDo, index) => (
-            <DraggableCards key={toDo} toDo={toDo} index={index} />
+            <DraggableCards
+              key={toDo.id}
+              toDoId={toDo.id}
+              toDoText={toDo.text}
+              index={index}
+              boardId={boardId}
+            />
           ))}
           {provided.placeholder}
         </Wrapper>
