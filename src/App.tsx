@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -21,13 +22,13 @@ const Container = styled.div`
     z-index: 9999;
   }
 `;
-const Borads = styled.div`
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(4, 1fr);
+const Boards = styled.div`
+  display: flex;
   position: absolute;
+  flex-wrap: wrap;
   top: 20px;
   left: 20px;
+  width: 90vw;
 `;
 
 function App() {
@@ -42,10 +43,12 @@ function App() {
         const taskObj = boardCopy[source.index];
         boardCopy.splice(source.index, 1);
         boardCopy.splice(destination.index, 0, taskObj);
-        return {
+        const newBoard = {
           ...boards,
           [source.droppableId]: boardCopy,
         };
+        localStorage.setItem("board", JSON.stringify(newBoard));
+        return newBoard;
       });
     }
     if (destination.droppableId !== source.droppableId) {
@@ -56,26 +59,35 @@ function App() {
         const taskObj = sourceBoard[source.index];
         sourceBoard.splice(source.index, 1);
         destinationBoard.splice(destination.index, 0, taskObj);
-        return {
+        const newBoard = {
           ...borads,
           [source.droppableId]: sourceBoard,
           [destination.droppableId]: destinationBoard,
         };
+        localStorage.setItem("board", JSON.stringify(newBoard));
+        return newBoard;
       });
     }
   };
   const onClick = () => {
     setModal((prev) => !prev);
   };
+  useEffect(() => {
+    const storage = localStorage.getItem("board");
+    if (storage !== null) {
+      const parsedData = JSON.parse(storage);
+      setToDos(parsedData);
+    }
+  }, [setToDos]);
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Container>
         <i className="fa-solid fa-circle-plus" onClick={onClick}></i>
-        <Borads>
+        <Boards>
           {Object.keys(toDos).map((boardId) => (
             <Board boardId={boardId} toDos={toDos[boardId]} key={boardId} />
           ))}
-        </Borads>
+        </Boards>
         <CreateBoard />
       </Container>
     </DragDropContext>
@@ -83,3 +95,4 @@ function App() {
 }
 
 export default App;
+

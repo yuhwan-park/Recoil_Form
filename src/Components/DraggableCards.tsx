@@ -48,10 +48,12 @@ function DraggableCards({
       // ToDo 삭제기능
       const boardCopy = [...boards[boardId]];
       boardCopy.splice(index, 1);
-      return {
+      const newBoard = {
         ...boards,
         [boardId]: boardCopy,
       };
+      localStorage.setItem("board", JSON.stringify(newBoard));
+      return newBoard;
     });
   };
   return (

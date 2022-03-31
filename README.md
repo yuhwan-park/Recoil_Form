@@ -11,11 +11,18 @@
 
 # trello
 
+- [ ] 보드 dnd
+- [ ] 보드 삭제 기능
+- [x] 반응형 디자인
+- [x] 로컬스토리지
+- [ ] toDo check 기능
+
 <ul>
 <li>2.1.0 : 트렐로 클론 앱 초기 디자인 및 세팅, React-beautiful-dnd 라이브러리로 초기 구성</li>
 <li>2.2.0 : splice로 dnd하면 위치 바뀌는 기능, Card 컴포넌트화, React memo로 불필요한 렌더링 방지</li>
 <li>3.1.0 : 여러 board 만든 후 board끼리 dnd 할 수 있는 기능, dnd의 snapshot 으로 옮길때 배경색 바뀌는 기능</li>
 <li>4.1.0 : ToDo 추가할 수 있는 input 기능, ToDo 삭제기능 추가</li>
 <li>4.2.0 : Board 추가기능</li>
+<li>4.3.0 : 로컬스토리지 기능 적용, Board 리사이즈 기능 적용</li>
 
 </ul>

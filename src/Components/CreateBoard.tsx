@@ -68,10 +68,12 @@ function CreateBoard() {
   const { register, handleSubmit, setValue } = useForm();
   const onSubmit = ({ board }: any) => {
     setToDos((allboards) => {
-      return {
+      const createBoard = {
         ...allboards,
         [board]: [],
       };
+      localStorage.setItem("board", JSON.stringify(createBoard));
+      return createBoard;
     });
     setValue("board", "");
     setModal(true);
